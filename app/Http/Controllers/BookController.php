@@ -20,13 +20,16 @@ class BookController extends Controller
 
     public function store(BookRequest $request)
     {
-        Book::create($request->validated());
+        Book::create($request->all());
         return redirect()->route('home')->with('success', 'Libro creado exitosamente.');
     }
 
-    public function show(Book $book)
+
+    public function show($id)
     {
-        return view('show', compact('book'));
+        $book = Book::findOrFail($id);
+
+        return view('edit', compact('book'));
     }
 
     public function edit(Book $book)
@@ -36,7 +39,7 @@ class BookController extends Controller
 
     public function update(BookRequest $request, Book $book)
     {
-        $book->update($request->validated());
+        $book->update($request->all());
         return redirect()->route('home')->with('success', 'Libro actualizado exitosamente.');
     }
 
