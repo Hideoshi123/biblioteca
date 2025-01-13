@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
 use App\Models\Book;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -47,5 +48,22 @@ class BookController extends Controller
     {
         $book->delete();
         return redirect()->route('home')->with('success', 'Libro eliminado exitosamente.');
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Book::query();
+
+        if ($request->has('start_date') && $request->has('end_date') && $request->start_date != '' && $request->end_date != '') {
+            $query->whereBetween('anio_publicacion', [$request->start_date, $request->end_date]);
+        }
+
+        if ($request->has('genre') && $request->genre != '') {
+            $query->where('genero', 'like', '%' . $request->genre . '%');
+        }
+
+        $books = $query->get();
+
+        return view('index', compact('books'));
     }
 }

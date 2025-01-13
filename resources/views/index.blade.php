@@ -4,6 +4,22 @@
         <a href="{{ route('books.create') }}" class="btn btn-success my-3">Agregar Nuevo Libro</a>
     </section>
 
+    <section class="my-4 text-center">
+        <form action="{{ route('books.filter') }}" method="POST">
+            @csrf
+            <div class="input-group mb-3">
+                <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" name="genre" class="form-control" placeholder="Género" value="{{ request('genre') }}">
+            </div>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Filtrar</button>
+            </div>
+        </form>
+    </section>
+
     <section class="container">
         @if ($books->isEmpty())
             <div class="alert alert-warning" role="alert">
